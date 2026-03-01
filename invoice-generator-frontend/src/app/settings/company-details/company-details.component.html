@@ -1,0 +1,199 @@
+<div
+    class="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+    <app-sidebar></app-sidebar>
+    <main class="flex-1 flex flex-col overflow-hidden">
+        <header
+            class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 z-10">
+            <div class="flex items-center gap-4">
+                <h2 class="text-xl font-bold">Company Details</h2>
+            </div>
+            <div class="flex items-center gap-4">
+                <button (click)="toggleDarkMode()"
+                    class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                    <span class="material-symbols-outlined">
+                        {{ darkMode ? 'light_mode' : 'dark_mode' }}
+                    </span>
+                </button>
+                <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span
+                        class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+                </button>
+                <div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
+                <div class="flex items-center gap-3 pl-2">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold leading-none">Alex Rivera</p>
+                        <p class="text-xs text-slate-500 mt-1">Admin Account</p>
+                    </div>
+                    <div class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center ring-2 ring-primary/20"
+                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBCQnP-ATK-sryydVgIcfbXXuy3NE-JgzGhtkEF1n1aDH8XffqC4eDfBpOlQz1v5Zl4_kBTFIGM6kAg31-ULB7ZstMg2jw8OtGB4X9EOmCupfAkMaPFGiZ6Bl7pHkVzef5FkkfnyD5YyveCKoVBi1UOWmDzyItDo7v1M_bCzicgGJX1JSfh9P-q2H4XTElhUY6T_7MC-HEwdIpVuAA-iisnVuXnYqierRfbkQpiaVaTiINMRIrmBIZatFOe_LLPkfat2150nrmns5S4')">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="flex-1 overflow-y-auto p-8 bg-slate-50 dark:bg-slate-950">
+            <div class="max-w-5xl mx-auto space-y-6 pb-12">
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                    <div class="bg-primary px-6 py-3">
+                        <h3 class="text-white font-semibold flex items-center gap-2 text-sm uppercase tracking-wide">
+                            <span class="material-symbols-outlined text-lg">business</span>
+                            Company Information
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">Company
+                                    Name <span class="text-red-500">*</span></label>
+                                <input [(ngModel)]="companyDetails.name"
+                                    class="w-full h-11 px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+                                    placeholder="Enter company name" type="text" />
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">GSTIN
+                                    Number</label>
+                                <input [(ngModel)]="companyDetails.gstin"
+                                    class="w-full h-11 px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+                                    placeholder="Enter GSTIN" type="text" />
+                            </div>
+                            <div class="space-y-1.5 md:col-span-2">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">Address
+                                    <span class="text-red-500">*</span></label>
+                                <textarea [(ngModel)]="companyDetails.address"
+                                    class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+                                    placeholder="Full business address" rows="3"></textarea>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">Email
+                                    <span class="text-red-500">*</span></label>
+                                <input [(ngModel)]="companyDetails.email"
+                                    class="w-full h-11 px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+                                    placeholder="Email Address" type="email" />
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">Phone
+                                    <span class="text-red-500">*</span></label>
+                                <input [(ngModel)]="companyDetails.phone"
+                                    class="w-full h-11 px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+                                    placeholder="Phone Number" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">account_balance</span>
+                        <h3 class="text-slate-900 dark:text-white font-bold text-sm uppercase tracking-wide">Bank
+                            Details</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">Bank
+                                    Name</label>
+                                <input [(ngModel)]="companyDetails.bankName"
+                                    class="w-full h-11 px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                    placeholder="e.g. HDFC BANK" type="text" />
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">Branch
+                                    Name</label>
+                                <input [(ngModel)]="companyDetails.branchName"
+                                    class="w-full h-11 px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                    placeholder="Branch location" type="text" />
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">Account
+                                    Number</label>
+                                <input [(ngModel)]="companyDetails.accountNumber"
+                                    class="w-full h-11 px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                    placeholder="000000000000" type="text" />
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">IFSC
+                                    Code</label>
+                                <input [(ngModel)]="companyDetails.ifscCode"
+                                    class="w-full h-11 px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                    placeholder="BANK0000001" type="text" />
+                            </div>
+                            <div class="space-y-1.5 md:col-span-2">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">UPI ID
+                                    (for QR Code)</label>
+                                <input [(ngModel)]="companyDetails.upiId"
+                                    class="w-full h-11 px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                    placeholder="username@upi" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">more_horiz</span>
+                        <h3 class="text-slate-900 dark:text-white font-bold text-sm uppercase tracking-wide">Additional
+                            Details</h3>
+                    </div>
+                    <div class="p-6 space-y-8">
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">Declaration
+                                (one point per line)</label>
+                            <textarea [(ngModel)]="companyDetails.declaration"
+                                class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                rows="3"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-3">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">Company
+                                    Logo</label>
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="size-20 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 overflow-hidden">
+                                        <img *ngIf="companyDetails.logoUrl" [src]="companyDetails.logoUrl"
+                                            alt="Logo preview" class="w-full h-full object-contain" />
+                                        <span *ngIf="!companyDetails.logoUrl"
+                                            class="material-symbols-outlined text-slate-400">image</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <input (change)="onLogoSelected($event)"
+                                            class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer"
+                                            type="file" accept="image/*" />
+                                        <p class="mt-1 text-[10px] text-slate-400">Supported: JPG, PNG. Max 2MB.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">Authorised
+                                    Signatory</label>
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="size-20 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 overflow-hidden">
+                                        <img *ngIf="companyDetails.signatureUrl" [src]="companyDetails.signatureUrl"
+                                            alt="Signature preview" class="w-full h-full object-contain" />
+                                        <span *ngIf="!companyDetails.signatureUrl"
+                                            class="material-symbols-outlined text-slate-400 text-3xl">signature</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <input (change)="onSignatureSelected($event)"
+                                            class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer"
+                                            type="file" accept="image/*" />
+                                        <p class="mt-1 text-[10px] text-slate-400">Clear background signature
+                                            recommended.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center pt-4">
+                    <button (click)="saveDetails()"
+                        class="px-12 py-3.5 bg-primary text-white font-bold rounded-lg shadow-xl shadow-primary/25 hover:bg-blue-700 transition-all flex items-center gap-2 hover:scale-[1.02] active:scale-95">
+                        <span class="material-symbols-outlined">save</span>
+                        Save Company Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

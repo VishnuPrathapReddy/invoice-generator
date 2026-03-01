@@ -1,0 +1,60 @@
+<aside
+    class="w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col h-full">
+    <div class="p-6 flex items-center gap-3">
+        <div
+            class="bg-primary size-10 rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/20">
+            <span class="material-symbols-outlined">payments</span>
+        </div>
+        <div>
+            <h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white leading-none">BillingPro</h1>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Enterprise Account</p>
+        </div>
+    </div>
+
+    <nav class="flex-1 px-4 space-y-1 mt-4">
+        <a routerLink="/" routerLinkActive="bg-primary/10 text-primary font-semibold"
+            [routerLinkActiveOptions]="{exact: true}"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="text-sm">Dashboard</span>
+        </a>
+        <a routerLink="/invoices/create" routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+            <span class="material-symbols-outlined">description</span>
+            <span class="text-sm">Invoices</span>
+        </a>
+        <a routerLink="/products" routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span class="text-sm">Products</span>
+        </a>
+        <a routerLink="/customers" routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+            <span class="material-symbols-outlined">group</span>
+            <span class="text-sm">Clients</span>
+        </a>
+
+        <a routerLink="/settings/company" routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="text-sm">Settings</span>
+        </a>
+
+        <!-- Logout Button -->
+        <button (click)="logout()"
+            class="w-full flex items-center gap-3 px-3 py-2.5 mt-4 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="text-sm font-semibold">Sign Out</span>
+        </button>
+    </nav>
+
+    <div class="p-4 border-t border-slate-200 dark:border-slate-800">
+        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-4">
+            <p class="text-xs font-medium text-slate-500 mb-2">STORAGE USED</p>
+            <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mb-2">
+                <div class="bg-primary h-1.5 rounded-full" style="width: 65%"></div>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400">8.2 GB of 10 GB</p>
+        </div>
+    </div>
+</aside>

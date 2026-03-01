@@ -1,0 +1,226 @@
+<div
+    class="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+    <app-sidebar></app-sidebar>
+    <main class="flex-1 flex flex-col overflow-hidden">
+        <header
+            class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 z-10">
+            <div class="flex-1 max-w-md">
+                <div class="relative">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+                    <input [(ngModel)]="searchQuery" (input)="onSearch()"
+                        class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm placeholder:text-slate-400"
+                        placeholder="Search customers..." type="text" />
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button (click)="toggleDarkMode()"
+                    class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                    <span class="material-symbols-outlined">
+                        {{ darkMode ? 'light_mode' : 'dark_mode' }}
+                    </span>
+                </button>
+                <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span
+                        class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+                </button>
+                <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                    <span class="material-symbols-outlined">chat_bubble</span>
+                </button>
+                <div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
+                <div class="flex items-center gap-3 pl-2">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold leading-none">Alex Rivera</p>
+                        <p class="text-xs text-slate-500 mt-1">Admin Account</p>
+                    </div>
+                    <div class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center ring-2 ring-primary/20"
+                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBCQnP-ATK-sryydVgIcfbXXuy3NE-JgzGhtkEF1n1aDH8XffqC4eDfBpOlQz1v5Zl4_kBTFIGM6kAg31-ULB7ZstMg2jw8OtGB4X9EOmCupfAkMaPFGiZ6Bl7pHkVzef5FkkfnyD5YyveCKoVBi1UOWmDzyItDo7v1M_bCzicgGJX1JSfh9P-q2H4XTElhUY6T_7MC-HEwdIpVuAA-iisnVuXnYqierRfbkQpiaVaTiINMRIrmBIZatFOe_LLPkfat2150nrmns5S4')">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Customers</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Manage your clients and their billing
+                            information</p>
+                    </div>
+                    <button (click)="openAddModal()"
+                        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                        <span class="material-symbols-outlined text-xl">add</span>
+                        Add Customer
+                    </button>
+                </div>
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead
+                                class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-6 py-4 border-b border-slate-200 dark:border-slate-800">Name</th>
+                                    <th class="px-6 py-4 border-b border-slate-200 dark:border-slate-800">Contact Number
+                                    </th>
+                                    <th class="px-6 py-4 border-b border-slate-200 dark:border-slate-800">Business Type
+                                    </th>
+                                    <th class="px-6 py-4 border-b border-slate-200 dark:border-slate-800">Address</th>
+                                    <th class="px-6 py-4 border-b border-slate-200 dark:border-slate-800">GSTIN</th>
+                                    <th class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 text-right">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                                <tr *ngFor="let customer of customers"
+                                    class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                                    <td class="px-6 py-5">
+                                        <div class="flex items-center gap-3">
+                                            <div *ngIf="customer.initials"
+                                                [class]="'size-9 rounded-full flex items-center justify-center text-xs font-bold ' + customer.logoBg + ' ' + customer.logoColor">
+                                                {{ customer.initials }}
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-semibold text-slate-900 dark:text-white">{{
+                                                    customer.name }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-5 text-sm text-slate-600 dark:text-slate-400">{{
+                                        customer.contactNumber
+                                        }}</td>
+                                    <td class="px-6 py-5">
+                                        <span
+                                            [class]="'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' + customer.typeBg + ' ' + customer.typeColor">
+                                            {{ customer.businessType }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-5 text-sm text-slate-600 dark:text-slate-400 max-w-xs truncate">
+                                        {{ customer.address }}
+                                    </td>
+                                    <td class="px-6 py-5 text-sm font-mono text-slate-500 uppercase">{{ customer.gstin
+                                        || '—' }}</td>
+                                    <td class="px-6 py-5 text-right">
+                                        <div class="flex justify-end gap-2">
+                                            <button (click)="openEditModal(customer)"
+                                                class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                                                title="Edit Customer">
+                                                <span class="material-symbols-outlined text-xl leading-none">edit</span>
+                                            </button>
+                                            <button (click)="deleteCustomer(customer._id)"
+                                                class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                                title="Delete Customer">
+                                                <span
+                                                    class="material-symbols-outlined text-xl leading-none">delete</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination placeholder -->
+                    <div
+                        class="px-6 py-4 bg-slate-50/50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                        <p class="text-sm text-slate-500">Showing <span
+                                class="font-medium text-slate-900 dark:text-white">{{ customers.length > 0 ? 1 : 0
+                                }}</span> to <span class="font-medium text-slate-900 dark:text-white">{{
+                                customers.length }}</span> of <span
+                                class="font-medium text-slate-900 dark:text-white">{{ allCustomers.length }}</span>
+                            customers</p>
+                        <div class="flex gap-2">
+                            <button
+                                class="px-3 py-1 text-sm border border-slate-200 dark:border-slate-700 rounded bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 disabled:opacity-50"
+                                disabled="">Previous</button>
+                            <button
+                                class="px-3 py-1 text-sm border border-slate-200 dark:border-slate-700 rounded bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div *ngIf="showAddCustomerModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+    <div
+        class="bg-white dark:bg-slate-900 w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+        <div class="px-8 py-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white">{{ isEditing ? 'Edit Customer' : 'Add New
+                    Customer' }}</h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">{{ isEditing ? 'Update customer details' :
+                    'Create a new customer profile in your billing system.' }}</p>
+            </div>
+            <button (click)="closeModal()"
+                class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form class="p-8 space-y-6" (ngSubmit)="saveCustomer()">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2 col-span-2">
+                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="name">Customer
+                        Name</label>
+                    <input [(ngModel)]="currentCustomer.name"
+                        class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none text-slate-900 dark:text-white"
+                        id="name" name="name" placeholder="Enter full name or business name" type="text" required />
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="contact">Contact
+                        Number</label>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">call</span>
+                        <input [(ngModel)]="currentCustomer.contactNumber"
+                            class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none text-slate-900 dark:text-white"
+                            id="contact" name="contact" placeholder="+1 (555) 000-0000" type="tel" />
+                    </div>
+                </div>
+
+
+                <div class="space-y-2">
+                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="business-type">Business
+                        Type</label>
+                    <select [(ngModel)]="currentCustomer.businessType"
+                        class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none appearance-none cursor-pointer text-slate-900 dark:text-white"
+                        id="business-type" name="business-type">
+                        <option value="Individual">Individual</option>
+                        <option value="Proprietor">Proprietor</option>
+                        <option value="Partnership">Partnership</option>
+                        <option value="Company">Company</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="space-y-2 col-span-2">
+                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="gstin">GSTIN / Tax
+                        ID</label>
+                    <input [(ngModel)]="currentCustomer.gstin"
+                        class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none text-slate-900 dark:text-white"
+                        id="gstin" name="gstin" placeholder="Enter 15-digit GSTIN number" type="text" />
+                </div>
+                <div class="space-y-2 col-span-2">
+                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                        for="address">Address</label>
+                    <textarea [(ngModel)]="currentCustomer.address"
+                        class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none resize-none text-slate-900 dark:text-white"
+                        id="address" name="address" placeholder="Full street address, city, state, zip"
+                        rows="3"></textarea>
+                </div>
+            </div>
+            <div class="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end gap-4">
+                <button (click)="closeModal()"
+                    class="px-6 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                    type="button">
+                    Cancel
+                </button>
+                <button
+                    class="px-8 py-2.5 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95"
+                    type="submit">
+                    {{ isEditing ? 'Update Customer' : 'Save Customer' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

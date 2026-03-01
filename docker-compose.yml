@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./invoice-generator
+      dockerfile: Dockerfile
+    container_name: invoice-backend
+    environment:
+      NODE_ENV: development
+      MONGO_URI: mongodb://mongodb:27017/myapp
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./invoice-generator:/app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+    command: npm run dev
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  forntend:
+    build:
+      context: ./invoice-generator-frontend
+      dockerfile: Dockerfile
+    container_name: invoice-frontend
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./invoice-generator-frontend:/app
+      - /app/node_modules
+    command: npm start
+    restart: unless-stopped
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:

@@ -1,0 +1,301 @@
+<div
+    class="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+    <app-sidebar></app-sidebar>
+    <main class="flex-1 flex flex-col overflow-hidden">
+        <header
+            class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 z-10">
+            <div class="flex items-center gap-4">
+                <h2 class="text-xl font-bold">Create New Invoice</h2>
+            </div>
+            <div class="flex items-center gap-4">
+                <button (click)="toggleDarkMode()"
+                    class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                    <span class="material-symbols-outlined">
+                        {{ darkMode ? 'light_mode' : 'dark_mode' }}
+                    </span>
+                </button>
+                <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span
+                        class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+                </button>
+                <div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
+                <div class="flex items-center gap-3 pl-2">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold leading-none">{{ currentUser?.name || 'User' }}</p>
+                        <p class="text-xs text-slate-500 mt-1">Admin Account</p>
+                    </div>
+                    <div
+                        class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-primary font-bold overflow-hidden ring-2 ring-primary/20">
+                        {{ currentUser?.name?.charAt(0) || 'U' }}
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="flex-1 overflow-y-auto p-8 bg-slate-50 dark:bg-slate-950">
+            <div class="max-w-7xl mx-auto space-y-6">
+                <!-- Details Section -->
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                    <div class="bg-primary px-6 py-3">
+                        <h3 class="text-white font-semibold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-xl">description</span>
+                            Invoice Details
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Invoice Type <span
+                                        class="text-red-500">*</span></label>
+                                <select [(ngModel)]="invoiceType"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm">
+                                    <option>Sale Invoice</option>
+                                    <option>Purchase Invoice</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5 md:col-span-2">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Customer Name <span
+                                        class="text-red-500">*</span></label>
+                                <select [(ngModel)]="selectedCustomer"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer">
+                                    <option [ngValue]="null">Select customer</option>
+                                    <option *ngFor="let customer of customers" [ngValue]="customer">{{ customer.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Invoice
+                                    Number</label>
+                                <input [(ngModel)]="invoiceNumber"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                    placeholder="e.g. INV-001" type="text" />
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Date <span
+                                        class="text-red-500">*</span></label>
+                                <input [(ngModel)]="invoiceDate"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                    type="date" />
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Place of
+                                    Supply</label>
+                                <input [(ngModel)]="placeOfSupply"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                    placeholder="e.g. Delhi" type="text" />
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Mode/Terms of
+                                    Payment <span class="text-red-500">*</span></label>
+                                <select [(ngModel)]="paymentMode"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer">
+                                    <option>Cash</option>
+                                    <option>Net Banking</option>
+                                    <option>Credit Card</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5 md:col-span-2">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">GST Type <span
+                                        class="text-red-500">*</span></label>
+                                <select [(ngModel)]="gstType"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer">
+                                    <option>In State (CGST + SGST)</option>
+                                    <option>Out of State (IGST)</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5 md:col-span-2">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Service Charge Price
+                                    Type <span class="text-red-500">*</span></label>
+                                <select [(ngModel)]="priceType"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer">
+                                    <option>Exclusive of Tax</option>
+                                    <option>Inclusive of Tax</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Products Section -->
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+                        <h3 class="text-slate-900 dark:text-white font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">add_shopping_cart</span>
+                            Add Products / Services
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <!-- Add New Item Form -->
+                        <div
+                            class="flex flex-wrap items-end gap-4 pb-8 border-b border-dashed border-slate-200 dark:border-slate-800">
+                            <div class="flex-1 min-w-[150px] space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Barcode Scan</label>
+                                <input [(ngModel)]="barcodeScan"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                    placeholder="Scan product here..." type="text" />
+                            </div>
+                            <div class="flex-1 min-w-[200px] space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Or Select
+                                    Product/Service</label>
+                                <select [(ngModel)]="selectedProduct" (ngModelChange)="onProductSelect()"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer">
+                                    <option [ngValue]="null">Select Product</option>
+                                    <option *ngFor="let product of products" [ngValue]="product">{{ product.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="flex-[2] min-w-[250px] space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Description</label>
+                                <textarea [(ngModel)]="description"
+                                    class="w-full min-h-[40px] px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                    placeholder="Enter service description" rows="1"></textarea>
+                            </div>
+                            <div class="w-20 space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Qty</label>
+                                <input [(ngModel)]="qty"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                    type="number" min="1" />
+                            </div>
+                            <div class="w-28 space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Rate</label>
+                                <input [(ngModel)]="rate"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                    type="number" />
+                            </div>
+                            <div class="w-28 space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Svc. Chg.</label>
+                                <input [(ngModel)]="serviceCharge"
+                                    class="w-full h-10 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                    type="number" />
+                            </div>
+                            <button (click)="addItem()"
+                                class="h-10 px-6 bg-primary text-white font-bold rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-sm shadow-primary/20">
+                                <span class="material-symbols-outlined text-lg">add</span>
+                                Add
+                            </button>
+                        </div>
+
+                        <!-- Items Table -->
+                        <div class="mt-8 overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-800">
+                            <table class="w-full text-left">
+                                <thead
+                                    class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 border-r border-slate-200 dark:border-slate-800 w-12 text-center">
+                                            #</th>
+                                        <th class="px-4 py-3 border-r border-slate-200 dark:border-slate-800">Service
+                                            Description</th>
+                                        <th class="px-4 py-3 border-r border-slate-200 dark:border-slate-800">HSN/SAC
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 border-r border-slate-200 dark:border-slate-800 text-center">
+                                            Qty</th>
+                                        <th class="px-4 py-3 border-r border-slate-200 dark:border-slate-800">Rate</th>
+                                        <th class="px-4 py-3 border-r border-slate-200 dark:border-slate-800">Service
+                                            Charge</th>
+                                        <th
+                                            class="px-4 py-3 border-r border-slate-200 dark:border-slate-800 text-center">
+                                            GST %</th>
+                                        <th class="px-4 py-3 border-r border-slate-200 dark:border-slate-800">GST Amt
+                                        </th>
+                                        <th class="px-4 py-3 border-r border-slate-200 dark:border-slate-800">Total</th>
+                                        <th class="px-4 py-3 text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                                    <tr *ngIf="items.length === 0" class="bg-white dark:bg-slate-900">
+                                        <td class="px-4 py-12 text-center text-slate-400 dark:text-slate-500 italic text-sm"
+                                            colspan="10">
+                                            No items added.
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let item of items; let i = index"
+                                        class="bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                        <td
+                                            class="px-4 py-3 border-r border-slate-200 dark:border-slate-800 text-center text-sm">
+                                            {{ i + 1 }}</td>
+                                        <td
+                                            class="px-4 py-3 border-r border-slate-200 dark:border-slate-800 text-sm font-medium">
+                                            {{ item.description }}</td>
+                                        <td
+                                            class="px-4 py-3 border-r border-slate-200 dark:border-slate-800 text-sm text-slate-500">
+                                            -</td>
+                                        <td
+                                            class="px-4 py-3 border-r border-slate-200 dark:border-slate-800 text-center text-sm">
+                                            {{ item.qty }}</td>
+                                        <td class="px-4 py-3 border-r border-slate-200 dark:border-slate-800 text-sm">
+                                            ${{ item.rate | number:'1.2-2' }}</td>
+                                        <td class="px-4 py-3 border-r border-slate-200 dark:border-slate-800 text-sm">
+                                            ${{ item.serviceCharge | number:'1.2-2' }}</td>
+                                        <td
+                                            class="px-4 py-3 border-r border-slate-200 dark:border-slate-800 text-center text-sm">
+                                            {{ item.gstRate }}%</td>
+                                        <td class="px-4 py-3 border-r border-slate-200 dark:border-slate-800 text-sm">
+                                            ${{ item.gstAmount | number:'1.2-2' }}</td>
+                                        <td
+                                            class="px-4 py-3 border-r border-slate-200 dark:border-slate-800 text-sm font-bold text-slate-900 dark:text-white">
+                                            ${{ item.total | number:'1.2-2' }}</td>
+                                        <td class="px-4 py-3 text-center">
+                                            <button (click)="removeItem(i)"
+                                                class="text-red-500 hover:text-red-700 transition-colors">
+                                                <span class="material-symbols-outlined text-lg">delete</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Footer / Totals -->
+                        <div class="mt-6 flex flex-col md:flex-row justify-between items-start gap-8">
+                            <div class="w-full md:max-w-md space-y-4">
+                                <div
+                                    class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800">
+                                    <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-2">Notes
+                                        / Terms</p>
+                                    <textarea [(ngModel)]="notes"
+                                        class="w-full bg-transparent border-none p-0 focus:ring-0 text-sm placeholder:text-slate-400"
+                                        placeholder="Add any terms or additional information here..."
+                                        rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="w-full md:w-80 space-y-3">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-500">Sub Total</span>
+                                    <span class="font-semibold">${{ subTotal | number:'1.2-2' }}</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-500">Discount</span>
+                                    <span class="font-semibold text-green-600">-$0.00</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-500">Tax Total</span>
+                                    <span class="font-semibold">${{ totalGST | number:'1.2-2' }}</span>
+                                </div>
+                                <div
+                                    class="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                                    <span class="text-base font-bold">Grand Total</span>
+                                    <span class="text-xl font-black text-primary">${{ grandTotal | number:'1.2-2'
+                                        }}</span>
+                                </div>
+                                <div class="pt-4 flex gap-3">
+                                    <button (click)="cancel()"
+                                        class="flex-1 py-2.5 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                                        Cancel
+                                    </button>
+                                    <button (click)="saveInvoice()"
+                                        class="flex-1 py-2.5 bg-primary text-white font-bold rounded-lg shadow-lg shadow-primary/25 hover:bg-blue-700 transition-colors">
+                                        Generate
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

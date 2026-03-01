@@ -1,0 +1,258 @@
+<div
+    class="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+    <app-sidebar></app-sidebar>
+    <main class="flex-1 flex flex-col overflow-hidden">
+        <header
+            class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 z-10">
+            <div class="flex-1 max-w-md">
+                <div class="relative">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+                    <input [(ngModel)]="searchQuery" (input)="onSearch()"
+                        class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm placeholder:text-slate-400"
+                        placeholder="Search products, HSN..." type="text" />
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button (click)="toggleDarkMode()"
+                    class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                    <span class="material-symbols-outlined">
+                        {{ darkMode ? 'light_mode' : 'dark_mode' }}
+                    </span>
+                </button>
+                <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span
+                        class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+                </button>
+                <div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
+                <div class="flex items-center gap-3 pl-2">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold leading-none">Alex Rivera</p>
+                        <p class="text-xs text-slate-500 mt-1">Admin Account</p>
+                    </div>
+                    <div class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center ring-2 ring-primary/20"
+                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBCQnP-ATK-sryydVgIcfbXXuy3NE-JgzGhtkEF1n1aDH8XffqC4eDfBpOlQz1v5Zl4_kBTFIGM6kAg31-ULB7ZstMg2jw8OtGB4X9EOmCupfAkMaPFGiZ6Bl7pHkVzef5FkkfnyD5YyveCKoVBi1UOWmDzyItDo7v1M_bCzicgGJX1JSfh9P-q2H4XTElhUY6T_7MC-HEwdIpVuAA-iisnVuXnYqierRfbkQpiaVaTiINMRIrmBIZatFOe_LLPkfat2150nrmns5S4')">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="flex-1 overflow-y-auto p-8 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white leading-tight">Products & Services</h2>
+                    <p class="text-sm text-slate-500 mt-1">Manage your inventory, pricing, and tax details.</p>
+                </div>
+                <button (click)="openAddModal()"
+                    class="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg font-semibold shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all active:scale-95">
+                    <span class="material-symbols-outlined text-xl">add</span>
+                    Add Product
+                </button>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead
+                            class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs font-bold uppercase tracking-wider">
+                            <tr>
+                                <th class="px-6 py-4">Name</th>
+                                <th class="px-6 py-4">Description</th>
+                                <th class="px-6 py-4">HSN/SAC Code</th>
+                                <th class="px-6 py-4">Sale Rate</th>
+                                <th class="px-6 py-4">GST %</th>
+                                <th class="px-6 py-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                            <tr *ngFor="let product of products"
+                                class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-5">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="size-10 rounded-lg bg-primary/5 flex items-center justify-center text-primary">
+                                            <span class="material-symbols-outlined">{{ product.icon }}</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-semibold text-slate-900 dark:text-white">{{
+                                                product.name }}</p>
+                                            <p class="text-[10px] text-slate-500">{{ product.category }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-5">
+                                    <p class="text-sm text-slate-600 dark:text-slate-400 max-w-xs truncate">{{
+                                        product.description }}</p>
+                                </td>
+                                <td class="px-6 py-5 text-sm text-slate-600 dark:text-slate-400 font-mono">{{
+                                    product.hsnSacCode }}</td>
+                                <td class="px-6 py-5 text-sm font-bold text-slate-900 dark:text-white">{{
+                                    product.saleRate
+                                    | currency }}</td>
+                                <td class="px-6 py-5">
+                                    <span
+                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">{{
+                                        product.gstRate }}</span>
+                                </td>
+                                <td class="px-6 py-5 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <button (click)="openEditModal(product)"
+                                            class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
+                                            title="Edit">
+                                            <span class="material-symbols-outlined text-xl">edit</span>
+                                        </button>
+                                        <button (click)="deleteProduct(product._id)"
+                                            class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                            title="Delete">
+                                            <span class="material-symbols-outlined text-xl">restore_from_trash</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div
+                    class="px-6 py-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <p class="text-xs text-slate-500 font-medium">Showing 1 to 5 of 820 products</p>
+                    <div class="flex items-center gap-1">
+                        <button
+                            class="p-1 rounded border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50"
+                            disabled="">
+                            <span class="material-symbols-outlined text-lg">chevron_left</span>
+                        </button>
+                        <button class="size-8 rounded bg-primary text-white text-xs font-bold">1</button>
+                        <button
+                            class="size-8 rounded text-slate-600 dark:text-slate-400 text-xs font-medium hover:bg-slate-50 dark:hover:bg-slate-800">2</button>
+                        <button
+                            class="size-8 rounded text-slate-600 dark:text-slate-400 text-xs font-medium hover:bg-slate-50 dark:hover:bg-slate-800">3</button>
+                        <button
+                            class="p-1 rounded border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">
+                            <span class="material-symbols-outlined text-lg">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div *ngIf="showAddProductModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+    <div
+        class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
+        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white">Add/Edit Product</h2>
+                <p class="text-sm text-slate-500">Enter the product details for your catalog.</p>
+            </div>
+            <button (click)="closeModal()"
+                class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form class="flex-1 overflow-y-auto p-6" (ngSubmit)="saveProduct()">
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5"
+                            for="product-name">
+                            Product Name <span class="text-red-500">*</span>
+                        </label>
+                        <input [(ngModel)]="currentProduct.name" name="name"
+                            class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-slate-900 dark:text-white"
+                            id="product-name" placeholder="e.g. Wireless Enterprise Router" required="" type="text" />
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5"
+                            for="description">
+                            Description
+                        </label>
+                        <textarea [(ngModel)]="currentProduct.description" name="description"
+                            class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm resize-none text-slate-900 dark:text-white"
+                            id="description" placeholder="Enter product specifications or service details..."
+                            rows="3"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5"
+                            for="hsn-code">
+                            HSN/SAC Code
+                        </label>
+                        <input [(ngModel)]="currentProduct.hsnSacCode" name="hsnSacCode"
+                            class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-slate-900 dark:text-white"
+                            id="hsn-code" placeholder="8-digit code" type="text" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5"
+                            for="barcode">
+                            Barcode
+                        </label>
+                        <div class="relative">
+                            <input [(ngModel)]="currentProduct.barcode" name="barcode"
+                                class="w-full pl-4 pr-10 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-slate-900 dark:text-white"
+                                id="barcode" placeholder="Scan or enter SKU" type="text" />
+                            <span
+                                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">barcode_scanner</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4">Pricing &amp; Tax</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5"
+                                for="sale-rate">
+                                Sale Rate <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+                                <input [(ngModel)]="currentProduct.saleRate" name="saleRate"
+                                    class="w-full pl-7 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-slate-900 dark:text-white"
+                                    id="sale-rate" placeholder="0.00" required="" type="number" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5"
+                                for="service-charge">
+                                Service Charge
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+                                <input [(ngModel)]="currentProduct.serviceCharge" name="serviceCharge"
+                                    class="w-full pl-7 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm text-slate-900 dark:text-white"
+                                    id="service-charge" placeholder="0.00" step="0.01" type="number" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5"
+                                for="gst-rate">
+                                GST Rate (%)
+                            </label>
+                            <select [(ngModel)]="currentProduct.gstRate" name="gstRate"
+                                class="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm appearance-none cursor-pointer text-slate-900 dark:text-white"
+                                id="gst-rate">
+                                <option [ngValue]="0">0% (Exempt)</option>
+                                <option [ngValue]="5">5%</option>
+                                <option [ngValue]="12">12%</option>
+                                <option [ngValue]="18">18%</option>
+                                <option [ngValue]="28">28%</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end gap-3 mt-6">
+                <button (click)="closeModal()"
+                    class="px-6 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                    type="button">
+                    Cancel
+                </button>
+                <button
+                    class="px-6 py-2.5 text-sm font-bold bg-primary text-white rounded-lg shadow-lg shadow-primary/20 hover:bg-blue-600 transition-all"
+                    type="submit">
+                    Save Product
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

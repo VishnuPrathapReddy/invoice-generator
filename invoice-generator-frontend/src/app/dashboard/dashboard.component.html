@@ -1,0 +1,152 @@
+<div
+    class="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+    <!-- Sidebar Navigation -->
+    <!-- Sidebar Navigation -->
+    <app-sidebar></app-sidebar>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header
+            class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 z-10">
+            <div class="flex-1 max-w-md">
+                <div class="relative">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+                    <input type="text" [(ngModel)]="searchQuery" (input)="onSearch()"
+                        class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm placeholder:text-slate-400"
+                        placeholder="Search invoices, clients..." />
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button (click)="toggleDarkMode()"
+                    class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                    <span class="material-symbols-outlined">
+                        {{ darkMode ? 'light_mode' : 'dark_mode' }}
+                    </span>
+                </button>
+                <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span
+                        class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+                </button>
+                <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                    <span class="material-symbols-outlined">chat_bubble</span>
+                </button>
+                <div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
+                <div class="flex items-center gap-3 pl-2">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold leading-none">{{ currentUser?.name || 'User' }}</p>
+                        <p class="text-xs text-slate-500 mt-1">Admin Account</p>
+                    </div>
+                    <div
+                        class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-primary font-bold overflow-hidden ring-2 ring-primary/20">
+                        {{ currentUser?.name?.charAt(0) || 'U' }}
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="flex-1 overflow-y-auto p-8 space-y-8">
+            <!-- KPI Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div *ngFor="let kpi of kpis"
+                    class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div
+                            [class]="'size-10 rounded-lg flex items-center justify-center ' + kpi.iconBg + ' ' + kpi.iconColor">
+                            <span class="material-symbols-outlined">{{ kpi.icon }}</span>
+                        </div>
+                        <span
+                            [class]="'text-xs font-bold px-2 py-1 rounded-full ' + kpi.trendBg + ' ' + kpi.trendColor">{{
+                            kpi.trend }}</span>
+                    </div>
+                    <p class="text-sm text-slate-500 font-medium">{{ kpi.title }}</p>
+                    <h3 class="text-2xl font-bold mt-1">{{ kpi.amount }}</h3>
+                    <p class="text-xs text-slate-400 mt-2">{{ kpi.subtitle }}</p>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-primary p-6 rounded-xl text-white shadow-lg shadow-primary/30 relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h3 class="text-lg font-bold mb-2">Create New Invoice</h3>
+                        <p class="text-primary-100 text-sm opacity-80 mb-6">Quickly generate and send a new bill.</p>
+                        <button [routerLink]="['/invoices/create']"
+                            class="w-full py-3 bg-white text-primary font-bold rounded-lg shadow-sm flex items-center justify-center gap-2 hover:bg-slate-50 transition-colors">
+                            <span class="material-symbols-outlined">add</span>
+                            New Invoice
+                        </button>
+                    </div>
+                    <div class="absolute -right-10 -bottom-10 size-40 bg-white/10 rounded-full blur-2xl"></div>
+                </div>
+            </div>
+
+            <!-- Recent Invoices Table -->
+            <div
+                class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                <div
+                    class="px-6 py-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/50">
+                    <h2 class="text-lg font-bold">Recent Invoices</h2>
+                    <button class="text-primary text-sm font-semibold hover:underline">View All</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead
+                            class="bg-slate-50 dark:bg-slate-800 text-slate-500 text-xs font-bold uppercase tracking-wider">
+                            <tr>
+                                <th class="px-6 py-4">Invoice No.</th>
+                                <th class="px-6 py-4">Date</th>
+                                <th class="px-6 py-4">Customer</th>
+                                <th class="px-6 py-4">Contact</th>
+                                <th class="px-6 py-4">Total Amt</th>
+                                <th class="px-6 py-4 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                            <tr *ngFor="let invoice of recentInvoices"
+                                class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm font-semibold text-slate-900 dark:text-white">{{ invoice.id
+                                    }}</td>
+                                <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">{{ invoice.date }}</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div *ngIf="invoice.client.initials"
+                                            [class]="'size-8 rounded-full flex items-center justify-center text-[10px] font-bold ' + invoice.client.logoBg + ' ' + invoice.client.logoColor">
+                                            {{ invoice.client.initials }}
+                                        </div>
+                                        <div *ngIf="invoice.client.logo"
+                                            class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center"
+                                            [style.background-image]="'url(' + invoice.client.logo + ')'">
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-semibold">{{ invoice.client.name }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-500">{{ invoice.contact }}</td>
+                                <td class="px-6 py-4 text-sm font-bold">{{ invoice.amount }}</td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <button class="p-1 text-slate-400 hover:text-primary transition-colors">
+                                            <span class="material-symbols-outlined text-xl">visibility</span>
+                                        </button>
+                                        <button (click)="downloadInvoice(invoice.id)"
+                                            class="p-1 text-slate-400 hover:text-primary transition-colors">
+                                            <span class="material-symbols-outlined text-xl">download</span>
+                                        </button>
+                                        <button class="p-1 text-slate-400 hover:text-red-500 transition-colors">
+                                            <span class="material-symbols-outlined text-xl">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
