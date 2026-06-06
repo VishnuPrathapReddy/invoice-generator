@@ -1,10 +1,9 @@
-name: node live
+name: Deploy
 
 on:
   push:
     branches:
       - main
-
 
 jobs:
   pull:
@@ -17,9 +16,9 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SSH_HOST }} 
+          host: ${{ secrets.SSH_HOST }}
           username: vishnu
-          key: ${{ secrets.SSH_KEY }} 
+          key: ${{ secrets.SSH_KEY }}
           script: |
             cd /home/vishnu/invoiceGenerator/invoice-generator
             git fetch
