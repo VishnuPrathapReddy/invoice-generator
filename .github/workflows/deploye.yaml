@@ -22,4 +22,4 @@ jobs:
           script: |
             cd /home/vishnu/invoiceGenerator/invoice-generator
             git fetch
-            git pull origin main
+            git pull origin main 
